@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WEBdek</title>
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <div id="toolbar">
+    <div class="window-buttons">
+      <span class="button close"></span>
+      <span class="button minimize"></span>
+      <span class="button maximize"></span>
+    </div>
+    <div class="title">WEBdek</div>
+    <div class="actions">Browser X11 desktop</div>
+  </div>
+
+  <main>
+    <section id="desktop">
+      <div class="welcome-panel">
+        <h1>WEBdek</h1>
+        <p>Use the dock below to launch X11 apps into the browser.</p>
+        <p>When apps are running, the embedded XPRA client will render them.</p>
+      </div>
+      <iframe id="xpraFrame" src="" title="WEBdek X11 display"></iframe>
+    </section>
+
+    <div id="statusBar">
+      <span id="statusText">Loading app list...</span>
+    </div>
+  </main>
+
+  <nav id="dock"></nav>
+  <script src="/app.js"></script>
+</body>
+</html>
