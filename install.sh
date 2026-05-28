@@ -11,7 +11,7 @@ fi
 
 install_base_packages() {
   apt update
-  apt install -y nodejs npm x11-apps xterm dbus-x11 rsync ca-certificates curl gnupg
+  apt install -y nodejs npm x11-apps xterm dbus-x11 xvfb rsync ca-certificates curl gnupg
 }
 
 install_xpra() {

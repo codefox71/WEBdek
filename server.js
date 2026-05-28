@@ -26,7 +26,8 @@ function startXpra() {
     '--html=on',
     '--exit-with-children',
     '--daemon=no',
-    '--start-child=xterm'
+    '--start-child=xterm',
+    '--xvfb=Xvfb -screen 0 1280x800x24 -nolisten tcp'
   ], {
     stdio: ['ignore', 'inherit', 'inherit']
   });
