@@ -32,4 +32,5 @@ http://localhost:3000
 ## Notes
 
 - The install script installs `nodejs`, `npm`, `xpra`, and basic X11 utilities.
+- If `xpra` is not available in the distribution repositories, the script adds the official xpra.org repository automatically.
 - The systemd service runs `WEBdek` at boot and starts the webserver on port `3000`.
