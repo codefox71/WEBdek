@@ -1,7 +1,8 @@
 const statusText = document.getElementById('statusText');
 const dock = document.getElementById('dock');
-const xpraFrame = document.getElementById('xpraFrame');
-let xpraLoaded = false;
+const vncFrame = document.getElementById('vncFrame');
+let vncLoaded = false;
+const NOVNC_PORT = 6080;
 
 async function updateStatus(message) {
   statusText.textContent = message;
@@ -56,10 +57,12 @@ async function launchApp(app) {
       throw new Error(data.error || 'Launch failed');
     }
 
-    if (!xpraLoaded) {
-      xpraFrame.src = '/xpra/';
-      xpraFrame.style.display = 'block';
-      xpraLoaded = true;
+    if (!vncLoaded) {
+      const protocol = window.location.protocol;
+      const host = window.location.hostname;
+      vncFrame.src = `${protocol}//${host}:${NOVNC_PORT}/vnc.html?host=${host}&port=${NOVNC_PORT}`;
+      vncFrame.style.display = 'block';
+      vncLoaded = true;
     }
 
     await updateStatus(data.message || `${app.label} launched.`);

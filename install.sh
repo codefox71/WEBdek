@@ -11,25 +11,11 @@ fi
 
 install_base_packages() {
   apt update
-  apt install -y nodejs npm python3-pip x11-apps xterm dbus-x11 xvfb rsync ca-certificates curl gnupg python-gi-dev python3-dev build-essential pkg-config libxkbfile-dev libxres-dev libxrandr-dev libxcomposite-dev libxdamage-dev libxtst-dev libxfixes-dev libxrender-dev libx11-dev libxext-dev libx264-dev libvpx-dev libxxhash-dev libgtk-3-dev libgirepository1.0-dev libgdk-pixbuf2.0-dev libpango1.0-dev libcairo2-dev libdbus-1-dev
-}
-
-install_xpra() {
-  if command -v xpra >/dev/null 2>&1; then
-    return
-  fi
-
-  echo "xpra is not available as an apt package on this distribution, using PyPI fallback..."
-  python3 -m pip install --upgrade pip setuptools wheel
-  python3 -m pip install xpra || {
-    echo "PyPI xpra install failed. Please ensure the required X11 build dependencies are installed and try again."
-    exit 1
-  }
+  apt install -y nodejs npm x11-apps xterm dbus-x11 xvfb rsync ca-certificates curl gnupg x11vnc novnc python3-websockify
 }
 
 echo "Installing required packages..."
 install_base_packages
-install_xpra
 
 mkdir -p "$PROJECT_DIR"
 rsync -a --exclude='node_modules' --exclude='.git' /workspaces/WEBdek/ "$PROJECT_DIR/"

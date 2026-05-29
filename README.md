@@ -6,7 +6,7 @@ WEBdek is a Linux web-based desktop environment that supports basic X11 app forw
 
 - Web UI with a customizable dock
 - Mac-like window button styling for the browser shell
-- Xpra-based X11 forwarding and rendering
+- X11 forwarding via Xvfb, x11vnc, and noVNC
 - `install.sh` configures a systemd service to start WEBdek at boot
 
 ## Install
@@ -31,8 +31,7 @@ http://localhost:3000
 
 ## Notes
 
-- The install script installs `nodejs`, `npm`, `python3-pip`, and basic X11 utilities.
-- If `xpra` is not available in the distribution repositories, the installer falls back to building `xpra` from PyPI.
-- The installer also installs `python-gi-dev`, `libxxhash-dev`, and video codec build dependencies (`libx264-dev`, `libvpx-dev`) required to compile `xpra` from source.
+- The install script installs `nodejs`, `npm`, and basic X11 utilities.
+- The desktop backend is now provided by `x11vnc`, `noVNC`, and `python3-websockify` instead of xpra.
 - The installer also installs `xvfb` so the desktop can run on a headless machine without an attached display.
 - The systemd service runs `WEBdek` at boot and starts the webserver on port `3000`.
