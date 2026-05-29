@@ -14,11 +14,13 @@ install_base_packages() {
   apt install -y nodejs npm x11-apps xterm dbus-x11 xvfb rsync ca-certificates curl gnupg x11vnc novnc python3-websockify
 }
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "Installing required packages..."
 install_base_packages
 
 mkdir -p "$PROJECT_DIR"
-rsync -a --exclude='node_modules' --exclude='.git' /workspaces/WEBdek/ "$PROJECT_DIR/"
+rsync -a --exclude='node_modules' --exclude='.git' "$SCRIPT_DIR/" "$PROJECT_DIR/"
 
 cd "$PROJECT_DIR"
 npm install --production
