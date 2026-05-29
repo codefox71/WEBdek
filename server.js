@@ -6,6 +6,7 @@ const { spawn } = require('child_process');
 const DISPLAY = ':100';
 const RFB_PORT = 5900;
 const NOVNC_PORT = 6080;
+const HOST = process.env.HOST || '0.0.0.0';
 const NOVNC_PATHS = ['/usr/share/novnc', '/usr/local/share/novnc'];
 const NOVNC_PATH = NOVNC_PATHS.find(fs.existsSync);
 let xvfbProcess = null;
@@ -53,7 +54,7 @@ function startDisplay() {
   });
 
   if (NOVNC_PATH) {
-    websockifyProcess = spawn('python3', ['-m', 'websockify', `${NOVNC_PORT}`, `127.0.0.1:${RFB_PORT}`, `--web=${NOVNC_PATH}`], {
+    websockifyProcess = spawn('python3', ['-m', 'websockify', `0.0.0.0:${NOVNC_PORT}`, `127.0.0.1:${RFB_PORT}`, `--web=${NOVNC_PATH}`], {
       stdio: ['ignore', 'inherit', 'inherit']
     });
 
@@ -120,8 +121,9 @@ app.get('/api/status', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`WEBdek server running on http://localhost:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`WEBdek server running on http://${HOST === '0.0.0.0' ? '0.0.0.0' : HOST}:${PORT}`);
+  console.log(`noVNC web client will be available on http://${HOST === '0.0.0.0' ? '0.0.0.0' : HOST}:${NOVNC_PORT}/vnc.html`);
   startDisplay();
 });
 

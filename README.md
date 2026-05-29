@@ -33,5 +33,6 @@ http://localhost:3000
 
 - The install script installs `nodejs`, `npm`, and basic X11 utilities.
 - The desktop backend is now provided by `x11vnc`, `noVNC`, and `python3-websockify` instead of xpra.
+- The server listens on all interfaces by default, so it can be accessed from other computers on your network.
 - The installer also installs `xvfb` so the desktop can run on a headless machine without an attached display.
 - The systemd service runs `WEBdek` at boot and starts the webserver on port `3000`.
