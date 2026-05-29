@@ -11,7 +11,7 @@ fi
 
 install_base_packages() {
   apt update
-  apt install -y nodejs npm x11-apps xterm dbus-x11 xvfb rsync ca-certificates curl gnupg
+  apt install -y nodejs npm python3-pip x11-apps xterm dbus-x11 xvfb rsync ca-certificates curl gnupg python-gi-dev python3-dev build-essential pkg-config libxkbfile-dev libxres-dev libxrandr-dev libxcomposite-dev libxdamage-dev libxtst-dev libxfixes-dev libxrender-dev libx11-dev libxext-dev libx264-dev libvpx-dev libxxhash-dev libgtk-3-dev libgirepository1.0-dev libgdk-pixbuf2.0-dev libpango1.0-dev libcairo2-dev libdbus-1-dev
 }
 
 install_xpra() {
@@ -19,32 +19,12 @@ install_xpra() {
     return
   fi
 
-  echo "Checking for xpra package availability..."
-  if ! apt-cache policy xpra | grep -q 'Candidate:'; then
-    echo "xpra package not found in current apt sources. Adding the official xpra repository..."
-
-    release="$(grep -E '^VERSION_CODENAME=' /etc/os-release | cut -d= -f2)"
-    if [[ -z "$release" ]]; then
-      release="$(lsb_release -cs 2>/dev/null || true)"
-    fi
-    if [[ -z "$release" ]]; then
-      echo "Unable to determine Ubuntu release codename. Please install xpra manually."
-      exit 1
-    fi
-
-    mkdir -p /etc/apt/keyrings
-    curl -fsSL https://xpra.org/gpg.asc | gpg --dearmor -o /etc/apt/keyrings/xpra.gpg
-    cat > /etc/apt/sources.list.d/xpra.list <<EOF
-
-deb [signed-by=/etc/apt/keyrings/xpra.gpg] https://xpra.org/ ${release} main
-EOF
-    apt update
-  fi
-
-  if ! apt install -y xpra; then
-    echo "xpra install failed; attempting python3-xpra fallback package..."
-    apt install -y python3-xpra
-  fi
+  echo "xpra is not available as an apt package on this distribution, using PyPI fallback..."
+  python3 -m pip install --upgrade pip setuptools wheel
+  python3 -m pip install xpra || {
+    echo "PyPI xpra install failed. Please ensure the required X11 build dependencies are installed and try again."
+    exit 1
+  }
 }
 
 echo "Installing required packages..."

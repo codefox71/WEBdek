@@ -31,7 +31,8 @@ http://localhost:3000
 
 ## Notes
 
-- The install script installs `nodejs`, `npm`, `xpra`, and basic X11 utilities.
-- If `xpra` is not available in the distribution repositories, the script adds the official xpra.org repository automatically.
+- The install script installs `nodejs`, `npm`, `python3-pip`, and basic X11 utilities.
+- If `xpra` is not available in the distribution repositories, the installer falls back to building `xpra` from PyPI.
+- The installer also installs `python-gi-dev`, `libxxhash-dev`, and video codec build dependencies (`libx264-dev`, `libvpx-dev`) required to compile `xpra` from source.
 - The installer also installs `xvfb` so the desktop can run on a headless machine without an attached display.
 - The systemd service runs `WEBdek` at boot and starts the webserver on port `3000`.
