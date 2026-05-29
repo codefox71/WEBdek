@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const DISPLAY = ':100';
 const RFB_PORT = 5900;
@@ -54,7 +55,7 @@ function startDisplay() {
   });
 
   if (NOVNC_PATH) {
-    websockifyProcess = spawn('python3', ['-m', 'websockify', `0.0.0.0:${NOVNC_PORT}`, `127.0.0.1:${RFB_PORT}`, `--web=${NOVNC_PATH}`], {
+    websockifyProcess = spawn('python3', ['-m', 'websockify', `127.0.0.1:${NOVNC_PORT}`, `127.0.0.1:${RFB_PORT}`, `--web=${NOVNC_PATH}`], {
       stdio: ['ignore', 'inherit', 'inherit']
     });
 
@@ -95,6 +96,19 @@ function stopDisplay() {
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+if (NOVNC_PATH) {
+  app.use('/novnc', express.static(NOVNC_PATH));
+  app.use(
+    '/websockify',
+    createProxyMiddleware({
+      target: `http://127.0.0.1:${NOVNC_PORT}`,
+      changeOrigin: true,
+      ws: true,
+      pathRewrite: { '^/websockify': '/' }
+    })
+  );
+}
 
 app.get('/api/apps', (req, res) => {
   res.json({ apps });
